@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أجنحة دمشق - حجز الجوازات والتذاكر الجوية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        gold: '#D4AF37',
+                        darkNavy: '#0F172A',
+                        brandBlue: '#1E3A8A',
+                        accentGold: '#F59E0B'
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Cairo', sans-serif; background-color: #0b1120; color: #f3f4f6; }
+        .glass-card { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gold-border { border-color: #D4AF37; }
+        .gold-text { color: #D4AF37; }
+        .gold-bg { background-color: #D4AF37; }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #D4AF37; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-700/50 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+               <div class="w-12 h-12 rounded-full overflow-hidden flex items-center justify-center text-slate-900 font-extrabold text-2xl shadow-lg">
+    <img src="logo.jpg" alt="اللوغو" class="w-full h-full object-cover">
+</div>
+                <div>
+                    <h1 class="text-xl font-black text-white tracking-wide">أجنحة دمشق للسفر والجوازات</h1>
+                    <p class="text-xs text-amber-400 font-semibold">حجز مباشر وسريع - انطلاق من دمشق</p>
+                </div>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/963982657214" target="_blank" class="hidden sm:flex items-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-md">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>واتساب: 0982657214</span>
+                </a>
+                <button onclick="openAdminModal()" class="bg-slate-800 hover:bg-slate-700 text-amber-400 border border-amber-500/30 px-4 py-2 rounded-xl text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-user-shield"></i>
+                    <span>لوحة الإدارة</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-grow">
+
+        <!-- Hero Section -->
+        <section class="mb-12 text-center relative overflow-hidden rounded-3xl p-8 glass-card border border-amber-500/20 shadow-2xl">
+            <div class="absolute -right-20 -top-20 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -left-20 -bottom-20 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <span class="inline-block bg-amber-500/20 text-amber-300 border border-amber-500/40 px-4 py-1.5 rounded-full text-xs font-extrabold mb-4">
+                <i class="fa-solid fa-headset ml-1"></i> مستشار الذكاء الاصطناعي متاح 24/7 للتسجيل
+            </span>
+            <h2 class="text-3xl md:text-5xl font-black mb-4 leading-tight">
+                رحلتك تبدأ من <span class="gold-text">دمشق</span> إلى أفضل الوجهات الأوربية
+            </h2>
+            <p class="text-slate-300 max-w-2xl mx-auto text-sm md:text-base mb-6">
+                سجل بياناتك كاملة عبر مستشارنا الذكي، واحصل فوراً على حجز طيرانك وتأكيد سفرك بخطوات بسيطة وخدمة ممتازة على مدار الساعة.
+            </p>
+            
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="startAiBooking()" class="gold-bg hover:bg-yellow-500 text-slate-950 font-black px-8 py-3.5 rounded-2xl shadow-xl transition transform hover:-translate-y-0.5 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-robot text-lg"></i>
+                    <span>ابدأ الحجز مع البوت الذكي الآن</span>
+                </button>
+            </div>
+        </section>
+
+        <!-- Destinations Pricing Cards -->
+        <section class="mb-12">
+            <div class="flex items-center justify-between mb-6">
+                <div>
+                    <h3 class="text-2xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-earth-europe gold-text"></i>
+                        <span>الوجهات المتاحة والأسعار (من مطار دمشق الدولي)</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">الأسعار محددة بالدولار الأمريكي وشاملة إجراءات الجواز والتذكرة</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" id="destinationsGrid">
+                <!-- JS Populated Grid -->
+            </div>
+        </section>
+
+        <!-- AI Smart Booking Section -->
+        <section id="bookingBotSection" class="scroll-mt-24 mb-12">
+            <div class="glass-card rounded-3xl border border-amber-500/30 overflow-hidden shadow-2xl grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
+                
+                <!-- Bot Info / Sidebar -->
+                <div class="lg:col-span-4 bg-slate-900/90 p-6 border-b lg:border-b-0 lg:border-l border-slate-700/50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="relative">
+                                <div class="w-12 h-12 rounded-2xl gold-bg flex items-center justify-center text-slate-950 font-bold text-xl shadow-md">
+                                    <i class="fa-solid fa-microchip"></i>
+                                </div>
+                                <span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-slate-900 rounded-full"></span>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-white">مستشار الجوازات الذكي</h4>
+                                <span class="text-xs text-emerald-400 font-semibold">متصل الآن - خدمة 24/7</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800/60 rounded-2xl p-4 border border-slate-700 text-xs text-slate-300 space-y-2 mb-6">
+                            <div class="font-bold text-amber-400 text-sm mb-1"><i class="fa-solid fa-clipboard-list ml-1"></i> الأوراق والبيانات المطلوب تحضيرها:</div>
+                            <p>• الاسم الكامل، اسم الأب، الكنية/النسبة، اسم الأم</p>
+                            <p>• تاريخ الميلاد، الرقم الوطني، رقم القيد، الجنسية</p>
+                            <p>• صورة الهوية الشخصية أو (بيان عائلة / إخراج قيد فردي / جواز قديم)</p>
+                            <p>• رقم الهاتف المحمول والبريد الإلكتروني للعميل الرئيسي</p>
+                            <p class="text-amber-300 font-semibold mt-2">• يمكن الحجز لـ 1 حتى 50 مسافراً دفعة واحدة!</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 bg-amber-500/10 rounded-2xl border border-amber-500/20 text-xs">
+                        <div class="font-bold text-amber-400 mb-1"><i class="fa-solid fa-shield-halved ml-1"></i> نظام تأكيد آمن</div>
+                        <p class="text-slate-300">بعد استكمال التسجيل كاملاً، ستظهر لك تذكرة الطيران مع خيار الإرسال المباشر للواتساب فوراً للتأكيد.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Bot Chat View -->
+                <div class="lg:col-span-8 p-6 flex flex-col justify-between bg-slate-950/40">
+                    <!-- Chat Output -->
+                    <div id="chatBox" class="space-y-4 overflow-y-auto max-h-[480px] pr-2 mb-4">
+                        <!-- AI Dynamic Messages -->
+                    </div>
+
+                    <!-- Input / Action Controls -->
+                    <div id="chatControls" class="border-t border-slate-800 pt-4">
+                        <!-- Step Controls inserted by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ticket Modal View (Visual Boarding Pass Preview) -->
+        <div id="ticketModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+            <div class="max-w-2xl w-full bg-slate-900 border border-amber-500/40 rounded-3xl p-6 shadow-2xl relative">
+                <button onclick="closeTicketModal()" class="absolute left-4 top-4 text-slate-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="text-center mb-6">
+                    <span class="inline-block bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 px-3 py-1 rounded-full text-xs font-bold mb-2">
+                        <i class="fa-solid fa-circle-check ml-1"></i> تم تسجيل الحجز بنجاح
+                    </span>
+                    <h3 class="text-2xl font-black text-white">تذكرة الطيران والحجز المعتمد</h3>
+                    <p class="text-xs text-slate-400">يرجى حفظ التذكرة وإرسالها فوراً إلى إدارة المنصة لتأكيد الموعد النهائي</p>
+                </div>
+
+                <!-- Printable Boarding Pass Render Element -->
+                <div id="boardingPassCard" class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border-2 border-amber-500/50 rounded-2xl p-6 text-white shadow-2xl relative overflow-hidden mb-6">
+                    <div class="absolute -right-10 -top-10 w-32 h-32 bg-amber-500/10 rounded-full blur-xl"></div>
+                    
+                    <div class="flex justify-between items-center border-b border-slate-700/80 pb-4 mb-4">
+                        <div>
+                            <h4 class="text-lg font-black text-amber-400">أجنحة دمشق للسفر - DAMASCUS WINGS</h4>
+                            <p class="text-xs text-slate-400">تذكرة سفر وحجز جواز رسمية</p>
+                        </div>
+                        <div class="text-left">
+                            <span class="text-xs text-slate-400 block">رقم الحجز</span>
+                            <span id="ticketPnr" class="font-mono text-sm font-bold text-amber-300">#DAM-00000</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-4 text-center my-6 py-4 bg-slate-950/60 rounded-xl border border-slate-800">
+                        <div>
+                            <span class="text-xs text-slate-400 block">من مطار</span>
+                            <span class="text-lg font-black text-white">دمشق (DAM)</span>
+                            <span class="text-[10px] text-amber-400 block">مطار دمشق الدولي</span>
+                        </div>
+                        <div class="flex flex-col items-center justify-center">
+                            <i class="fa-solid fa-plane text-amber-400 text-xl animate-pulse"></i>
+                            <span id="ticketFlightDate" class="text-xs font-bold text-slate-300 mt-1">--/--/----</span>
+                        </div>
+                        <div>
+                            <span class="text-xs text-slate-400 block">إلى وجهة</span>
+                            <span id="ticketDestination" class="text-lg font-black text-amber-400">--</span>
+                            <span id="ticketPriceTag" class="text-xs text-emerald-400 font-bold block">$0</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 text-xs mb-4">
+                        <div>
+                            <span class="text-slate-400 block">العميل الرئيسي:</span>
+                            <span id="ticketMainName" class="font-bold text-white text-sm">--</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block">عدد المسافرين:</span>
+                            <span id="ticketPaxCount" class="font-bold text-white text-sm">1</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block">رقم الهاتف:</span>
+                            <span id="ticketPhone" class="font-bold text-white text-sm">--</span>
+                        </div>
+                    </div>
+
+                    <div id="passengersSummaryList" class="bg-slate-900/80 p-3 rounded-xl border border-slate-800 text-[11px] space-y-1 mb-4">
+                        <!-- JS inserted passenger list summary -->
+                    </div>
+
+                    <div class="flex justify-between items-center pt-3 border-t border-slate-800 text-[10px] text-slate-400">
+                        <span>المكتب التجاري: 0982657214</span>
+                        <span>البريد: lenovovv56@gmail.com</span>
+                    </div>
+                </div>
+
+                <!-- Modal Actions -->
+                <div class="space-y-3">
+                    <button onclick="sendTicketViaWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl text-center flex items-center justify-center gap-2 shadow-lg transition">
+                        <i class="fa-brands fa-whatsapp text-xl"></i>
+                        <span>إرسال التذكرة وتفاصيل الحجز فوراً عبر الواتساب (0982657214)</span>
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="downloadTicketImage()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold py-2.5 px-3 rounded-xl text-sm flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-download"></i>
+                            <span>تحميل التذكرة (صورة JPG)</span>
+                        </button>
+                        <button onclick="copyBookingDetailsText()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-3 rounded-xl text-sm flex items-center justify-center gap-2 transition">
+                            <i class="fa-solid fa-copy"></i>
+                            <span>نسخ النص للتليجرام</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard Modal -->
+        <div id="adminModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+            <div class="max-w-4xl w-full bg-slate-900 border border-slate-700 rounded-3xl p-6 shadow-2xl relative">
+                <button onclick="closeAdminModal()" class="absolute left-4 top-4 text-slate-400 hover:text-white text-xl">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <!-- Admin Auth View -->
+                <div id="adminLoginForm" class="max-w-md mx-auto py-8">
+                    <div class="text-center mb-6">
+                        <div class="w-16 h-16 rounded-full gold-bg mx-auto flex items-center justify-center text-slate-950 text-2xl font-bold mb-3">
+                            <i class="fa-solid fa-user-lock"></i>
+                        </div>
+                        <h3 class="text-2xl font-black text-white">تسجيل دخول الإدارة</h3>
+                        <p class="text-xs text-slate-400">أدخل اسم المستخدم وكلمة المرور الخاصة بالمدير</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">اسم المستخدم</label>
+                            <input type="text" id="adminUser" placeholder="0982657214" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">كلمة المرور</label>
+                            <input type="password" id="adminPass" placeholder="admin123" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-white focus:outline-none focus:border-amber-500">
+                        </div>
+                        <button onclick="loginAdmin()" class="w-full gold-bg hover:bg-yellow-500 text-slate-950 font-bold py-3 rounded-xl transition shadow-lg">
+                            دخول اللوحة
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Admin Dashboard Main View -->
+                <div id="adminDashboard" class="hidden">
+                    <div class="flex justify-between items-center border-b border-slate-800 pb-4 mb-6">
+                        <div>
+                            <h3 class="text-xl font-black text-white">لوحة إحصائيات وإدارة الحجوزات</h3>
+                            <p class="text-xs text-slate-400">قائمة الطلبات المسجلة من العلاء عبر البوت الذكي</p>
+                        </div>
+                        <button onclick="logoutAdmin()" class="bg-rose-600/20 text-rose-400 border border-rose-500/30 px-3 py-1.5 rounded-xl text-xs font-bold hover:bg-rose-600 hover:text-white transition">
+                            تسجيل الخروج
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-right text-xs">
+                            <thead class="bg-slate-800 text-amber-400 uppercase">
+                                <tr>
+                                    <th class="p-3">رقم الحجز</th>
+                                    <th class="p-3">الوجهة والعميل</th>
+                                    <th class="p-3">تاريخ السفر</th>
+                                    <th class="p-3">عدد المسافرين</th>
+                                    <th class="p-3">الإجمالي</th>
+                                    <th class="p-3">التواصل</th>
+                                    <th class="p-3 text-center">التفاصيل</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminBookingsTable" class="divide-y divide-slate-800 text-slate-300">
+                                <!-- JS Populated -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-slate-800 py-8 px-4 text-center text-xs text-slate-400">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <h5 class="text-white font-bold text-sm">أجنحة دمشق للجوازات والحجز الجوي السريع</h5>
+                <p class="text-slate-500 mt-1">تسهيل كافة معاملات السفر والتذاكر المباشرة من مطار دمشق الدولي</p>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                <a href="tel:0982657214" class="text-amber-400 hover:underline flex items-center gap-1 font-bold">
+                    <i class="fa-solid fa-phone"></i>
+                    <span>مكالمات / واتساب: 0982657214</span>
+                </a>
+                <a href="mailto:lenovovv56@gmail.com" class="text-slate-300 hover:underline flex items-center gap-1 font-bold">
+                    <i class="fa-solid fa-envelope"></i>
+                    <span>lenovovv56@gmail.com</span>
+                </a>
+            </div>
+        </div>
+        <div class="mt-6 pt-4 border-t border-slate-900 text-slate-600">
+            © جميع الحقوق محفوظة - منصة حجز الجوازات السريعة 2026
+        </div>
+    </footer>
+
+    <script>
+        const destinationsData = [
+            { id: 'greece', name: 'اليونان', price: 100, image: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=600&q=80', desc: 'سفارة اليونان - انطلاق من دمشق' },
+            { id: 'italy', name: 'إيطاليا', price: 200, image: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=600&q=80', desc: 'سفارة إيطاليا - انطلاق من دمشق' },
+            { id: 'switzerland', name: 'سويسرا', price: 300, image: 'https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99?auto=format&fit=crop&w=600&q=80', desc: 'سفارة سويسرا - انطلاق من دمشق' },
+            { id: 'france', name: 'فرنسا', price: 400, image: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&w=600&q=80', desc: 'سفارة فرنسا - انطلاق من دمشق' },
+            { id: 'austria', name: 'النمسا', price: 500, image: 'https://images.unsplash.com/photo-1516550893923-42d28e5677af?auto=format&fit=crop&w=600&q=80', desc: 'سفارة النمسا - انطلاق من دمشق' },
+            { id: 'poland', name: 'بولندا', price: 600, image: 'https://images.unsplash.com/photo-1519197924294-4ba991a11128?auto=format&fit=crop&w=600&q=80', desc: 'سفارة بولندا - انطلاق من دمشق' },
+            { id: 'germany', name: 'ألمانيا', price: 700, image: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&w=600&q=80', desc: 'سفارة ألمانيا - انطلاق من دمشق' },
+            { id: 'netherlands', name: 'هولندا', price: 800, image: 'https://images.unsplash.com/photo-1512470876302-972faa2aa9a4?auto=format&fit=crop&w=600&q=80', desc: 'سفارة هولندا - انطلاق من دمشق' }
+        ];
+
+        // State variables for chatbot flow
+        let bookingState = {
+            step: 0,
+            selectedDestination: null,
+            travelDate: '',
+            passengerCount: 1,
+            currentPassengerIndex: 0,
+            passengers: [],
+            clientContact: { phone: '', email: '', name: '' }
+        };
+
+        let currentActiveBooking = null;
+
+        // Initialize App
+        window.onload = function() {
+            renderDestinations();
+            resetBotFlow();
+        };
+
+        function renderDestinations() {
+            const grid = document.getElementById('destinationsGrid');
+            grid.innerHTML = destinationsData.map(dest => `
+                <div class="glass-card rounded-2xl overflow-hidden border border-slate-800 hover:border-amber-500/50 transition duration-300 flex flex-col justify-between group">
+                    <div class="relative h-44 overflow-hidden">
+                        <img src="${dest.image}" alt="${dest.name}" class="w-full h-full object-cover group-hover:scale-110 transition duration-500">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        <span class="absolute top-3 left-3 bg-slate-950/80 backdrop-blur-md text-amber-400 font-extrabold text-sm px-3 py-1 rounded-xl border border-amber-500/30 shadow-md">
+                            $${dest.price} USD
+                        </span>
+                    </div>
+                    <div class="p-4 flex-grow flex flex-col justify-between">
+                        <div>
+                            <h4 class="text-lg font-bold text-white mb-1 flex items-center justify-between">
+                                <span>${dest.name}</span>
+                                <span class="text-xs text-amber-400 font-normal"><i class="fa-solid fa-plane-departure"></i> من دمشق</span>
+                            </h4>
+                            <p class="text-xs text-slate-400 mb-4">${dest.desc}</p>
+                        </div>
+                        <button onclick="selectDestinationFromCard('${dest.id}')" class="w-full bg-slate-800 hover:gold-bg hover:text-slate-950 text-amber-400 font-bold py-2 px-3 rounded-xl text-xs transition border border-amber-500/30 flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-calculator"></i>
+                            <span>حجز الوجهة الآن</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function resetBotFlow() {
+            bookingState = {
+                step: 1,
+                selectedDestination: null,
+                travelDate: '',
+                passengerCount: 1,
+                currentPassengerIndex: 0,
+                passengers: [],
+                clientContact: { phone: '', email: '', name: '' }
+            };
+            const chatBox = document.getElementById('chatBox');
+            chatBox.innerHTML = '';
+            addBotMessage("أهلاً بك في منصة أجنحة دمشق المباشرة للجوازات والتذاكر! ✈️<br>أنا المستشار الذكي المتواجد لخدمتك 24 ساعة. اختر وجهة السفر المطلوبة للبدء:");
+            renderStep1Controls();
+        }
+
+        function startAiBooking() {
+            document.getElementById('bookingBotSection').scrollIntoView({ behavior: 'smooth' });
+            if (bookingState.step === 0) resetBotFlow();
+        }
+
+        function selectDestinationFromCard(destId) {
+            startAiBooking();
+            const dest = destinationsData.find(d => d.id === destId);
+            if(dest) {
+                bookingState.selectedDestination = dest;
+                addUserMessage(`أرغب بحجز سفر إلى ${dest.name} بسعر $${dest.price}`);
+                bookingState.step = 2;
+                addBotMessage(`ممتاز! اخترت السفر إلى **${dest.name}** بمبلغ **$${dest.price}** للشخص الواحد.<br>الرجاء تحديد تاريخ الانطلاق المفضل من مطار دمشق الدولي:`);
+                renderStep2Controls();
+            }
+        }
+
+        function addBotMessage(text) {
+            const chatBox = document.getElementById('chatBox');
+            const msgHtml = `
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-xl gold-bg flex-shrink-0 flex items-center justify-center text-slate-950 text-xs font-bold shadow-md">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="bg-slate-800 border border-slate-700/80 rounded-2xl rounded-tr-none px-4 py-3 text-xs md:text-sm text-slate-200 shadow-md max-w-[85%] leading-relaxed">
+                        ${text}
+                    </div>
+                </div>
+            `;
+            chatBox.insertAdjacentHTML('beforeend', msgHtml);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function addUserMessage(text) {
+            const chatBox = document.getElementById('chatBox');
+            const msgHtml = `
+                <div class="flex items-start justify-end gap-3">
+                    <div class="bg-amber-500/20 border border-amber-500/40 rounded-2xl rounded-tl-none px-4 py-3 text-xs md:text-sm text-amber-200 shadow-md max-w-[85%] leading-relaxed">
+                        ${text}
+                    </div>
+                    <div class="w-8 h-8 rounded-xl bg-slate-700 flex-shrink-0 flex items-center justify-center text-white text-xs font-bold">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+            `;
+            chatBox.insertAdjacentHTML('beforeend', msgHtml);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        // Render Step 1: Destination Selector Buttons
+        function renderStep1Controls() {
+            const container = document.getElementById('chatControls');
+            container.innerHTML = `
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                    ${destinationsData.map(d => `
+                        <button onclick="handleStep1Select('${d.id}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white p-2.5 rounded-xl text-xs font-bold transition text-right flex justify-between items-center">
+                            <span>${d.name}</span>
+                            <span class="gold-text">$${d.price}</span>
+                        </button>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function handleStep1Select(destId) {
+            selectDestinationFromCard(destId);
+        }
+
+        // Render Step 2: Travel Date & Passenger Count Selection
+        function renderStep2Controls() {
+            const container = document.getElementById('chatControls');
+            const today = new Date().toISOString().split('T')[0];
+            container.innerHTML = `
+                <div class="space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">تاريخ الانطلاق من دمشق</label>
+                            <input type="date" id="inputTravelDate" min="${today}" value="${today}" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-300 mb-1">عدد المسافرين (يمكن حتى 50 شخصاً)</label>
+                            <input type="number" id="inputPaxCount" min="1" max="50" value="1" class="w-full bg-slate-800 border border-slate-700 rounded-xl px-3 py-2 text-white text-xs">
+                        </div>
+                    </div>
+                    <button onclick="submitStep2()" class="w-full gold-bg hover:bg-yellow-500 text-slate-950 font-bold py-2.5 rounded-xl text-xs transition">
+                        متابعة إلى أدخال بيانات المسافرين
+                    </button>
+                </div>
+            `;
+        }
+
+        function submitStep2() {
+            const date = document.getElementById('inputTravelDate').value;
+            const count = parseInt(document.getElementById('inputPaxCount').value) || 1;
+
+            if(!date) {
+                alert("يرجى تحديد تاريخ السفر");
+                return;
+            }
+
+            bookingState.travelDate = date;
+            bookingState.passengerCount = count;
+            bookingState.currentPassengerIndex = 0;
+            bookingState.passengers = [];
+
+            addUserMessage(`تاريخ السفر: ${date} | عدد المسافرين: ${count} شخص`);
+            bookingState.step = 3;
+
+            addBotMessage(`تم اعتماد التواريخ. الآن يرجى إدخال البيانات الكاملة للمسافر رقم (1 من أصل ${count}) كاملاً حسب الثبوتيات الرسمية:`);
+            renderPassengerFormControls();
+        }
+
+        function renderPassengerFormControls() {
+            const idx = bookingState.currentPassengerIndex + 1;
+            const container = document.getElementById('chatControls');
+            
+            container.innerHTML = `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+                    <div class="text-xs font-bold text-amber-400 border-b border-slate-800 pb-2">
+                        بيانات المسافر رقم (${idx} من أصل ${bookingState.passengerCount})
+                    </div>
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="pFirstName" placeholder="الاسم الأول *" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" id="pFatherName" placeholder="اسم الأب *" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" id="pLastName" placeholder="الكنية / النسبة *" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" id="pMotherName" placeholder="اسم الأم الثلاثي *" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-0.5">تاريخ الميلاد *</label>
+                            <input type="date" id="pDob" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-0.5">الرقم الوطني *</label>
+                            <input type="text" id="pNationalId" placeholder="الرقم الوطني" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="pRegisterNo" placeholder="رقم القيد والخانة *" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                        <input type="text" id="pNationality" value="عربي سوري" placeholder="الجنسية *" class="bg-slate-800 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white">
+                    </div>
+
+                    <div>
+                        <label class="block text-[10px] text-amber-400 font-bold mb-1">نوع المستند المرفق (إجباري):</label>
+                        <select id="pDocType" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-white mb-2">
+                            <option value="هوية شخصية">صورة الهوية الشخصية</option>
+                            <option value="بيان عائلة">بيان عائلة</option>
+                            <option value="إخراج قيد فردي">إخراج قيد فردي</option>
+                            <option value="جواز سفر قديم">صورة جواز سفر قديم</option>
+                        </select>
+                        <div class="flex items-center gap-2">
+                            <input type="file" id="pDocFile" accept="image/*" class="text-[10px] text-slate-400 bg-slate-800 rounded p-1 w-full">
+                        </div>
+                    </div>
+
+                    <button onclick="saveCurrentPassenger()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-xl text-xs transition">
+                        حفظ المسافر (${idx}) والمتابعة
+                    </button>
+                </div>
+            `;
+        }
+
+        function saveCurrentPassenger() {
+            const firstName = document.getElementById('pFirstName').value.trim();
+            const fatherName = document.getElementById('pFatherName').value.trim();
+            const lastName = document.getElementById('pLastName').value.trim();
+            const motherName = document.getElementById('pMotherName').value.trim();
+            const dob = document.getElementById('pDob').value;
+            const nationalId = document.getElementById('pNationalId').value.trim();
+            const registerNo = document.getElementById('pRegisterNo').value.trim();
+            const nationality = document.getElementById('pNationality').value.trim();
+            const docType = document.getElementById('pDocType').value;
+
+            if(!firstName || !fatherName || !lastName || !motherName || !dob || !nationalId || !registerNo) {
+                alert("يرجى إكمال كافة الحقول المطلوبة للمسافر قبل المتابعة.");
+                return;
+            }
+
+            const passengerObj = {
+                fullName: `${firstName} ${fatherName} ${lastName}`,
+                fatherName,
+                lastName,
+                motherName,
+                dob,
+                nationalId,
+                registerNo,
+                nationality,
+                docType
+            };
+
+            bookingState.passengers.push(passengerObj);
+            bookingState.currentPassengerIndex++;
+
+            if(bookingState.currentPassengerIndex < bookingState.passengerCount) {
+                const nextIdx = bookingState.currentPassengerIndex + 1;
+                addBotMessage(`تمت إضافة المسافر: **${passengerObj.fullName}**. الان يرجى إدخال بيانات المسافر رقم (${nextIdx}):`);
+                renderPassengerFormControls();
+            } else {
+                // Done with all passengers -> proceed to Booker Contact info
+                bookingState.step = 4;
+                addBotMessage("تم تسجيل أوراق وجوازات كافة المسافرين بنجاح! 📝<br>أخيراً، يرجى تزويدي برقم الموبايل (واتساب)، الاسم والبريد الإلكتروني لإرسال التذكرة وإكمال الملف:");
+                renderContactControls();
+            }
+        }
+
+        // Render Step 4: Contact details of primary client
+        function renderContactControls() {
+            const container = document.getElementById('chatControls');
+            container.innerHTML = `
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 space-y-3">
+                    <div class="text-xs font-bold text-amber-400">معلومات مقدم الطلب الرئيسي للتواصل وتلقي التذكرة</div>
+                    <input type="text" id="clientName" placeholder="الاسم الكامل للعميل الرئيسي *" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                    <input type="tel" id="clientPhone" placeholder="رقم الهاتف مع الواتساب (مثال: 0982657214) *" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+                    <input type="email" id="clientEmail" value="lenovovv56@gmail.com" placeholder="البريد الإلكتروني *" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+
+                    <button onclick="finishBooking()" class="w-full gold-bg hover:bg-yellow-500 text-slate-950 font-bold py-3 rounded-xl text-xs transition shadow-lg">
+                        تأكيد الحجز وتوليد تذكرة الطيران فوراً
+                    </button>
+                </div>
+            `;
+        }
+
+        function finishBooking() {
+            const name = document.getElementById('clientName').value.trim();
+            const phone = document.getElementById('clientPhone').value.trim();
+            const email = document.getElementById('clientEmail').value.trim();
+
+            if(!name || !phone || !email) {
+                alert("يرجى إدخال كافة بيانات التواصل للعميل الرئيسي.");
+                return;
+            }
+
+            bookingState.clientContact = { name, phone, email };
+
+            const bookingId = 'DAM-' + Math.floor(100000 + Math.random() * 900000);
+            const totalPrice = bookingState.selectedDestination.price * bookingState.passengerCount;
+
+            const finalBookingRecord = {
+                id: bookingId,
+                dateCreated: new Date().toLocaleString('ar-SY'),
+                destination: bookingState.selectedDestination.name,
+                unitPrice: bookingState.selectedDestination.price,
+                totalPrice: totalPrice,
+                travelDate: bookingState.travelDate,
+                passengerCount: bookingState.passengerCount,
+                passengers: bookingState.passengers,
+                clientContact: bookingState.clientContact
+            };
+
+            // Save to localStorage for Admin
+            saveBookingToAdmin(finalBookingRecord);
+
+            currentActiveBooking = finalBookingRecord;
+
+            addBotMessage(`تهانينا! تم إصدار حجزك المباشر برقم: **${bookingId}**.<br>إجمالي المبلغ: **$${totalPrice} USD** لعدد **${bookingState.passengerCount}** مسافرين.<br>جاري عرض التذكرة الإلكترونية...`);
+
+            document.getElementById('chatControls').innerHTML = `
+                <button onclick="resetBotFlow()" class="w-full bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold py-2 rounded-xl text-xs border border-slate-700">
+                    بدء حجز جديد
+                </button>
+            `;
+
+            // Open Ticket Modal
+            displayTicketModal(finalBookingRecord);
+        }
+
+        function saveBookingToAdmin(record) {
+            let bookings = JSON.parse(localStorage.getItem('damascus_wings_bookings') || '[]');
+            bookings.unshift(record);
+            localStorage.setItem('damascus_wings_bookings', JSON.stringify(bookings));
+        }
+
+        function displayTicketModal(record) {
+            document.getElementById('ticketPnr').innerText = '#' + record.id;
+            document.getElementById('ticketFlightDate').innerText = record.travelDate;
+            document.getElementById('ticketDestination').innerText = record.destination;
+            document.getElementById('ticketPriceTag').innerText = `$${record.totalPrice} USD`;
+            document.getElementById('ticketMainName').innerText = record.clientContact.name;
+            document.getElementById('ticketPaxCount').innerText = record.passengerCount;
+            document.getElementById('ticketPhone').innerText = record.clientContact.phone;
+
+            const listContainer = document.getElementById('passengersSummaryList');
+            listContainer.innerHTML = record.passengers.map((p, idx) => `
+                <div class="flex justify-between border-b border-slate-800/50 pb-1">
+                    <span>${idx+1}. ${p.fullName} (${p.docType})</span>
+                    <span class="text-slate-400 font-mono">الرقم الوطني: ${p.nationalId} | القيد: ${p.registerNo}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('ticketModal').classList.remove('hidden');
+        }
+
+        function closeTicketModal() {
+            document.getElementById('ticketModal').classList.add('hidden');
+        }
+
+        function generateMessagePayloadText() {
+            if(!currentActiveBooking) return '';
+            const b = currentActiveBooking;
+            let paxText = b.passengers.map((p, i) => `\n👤 *مسافر ${i+1}:* ${p.fullName}\n   - اسم الأم: ${p.motherName}\n   - تاريخ الميلاد: ${p.dob}\n   - الرقم الوطني: ${p.nationalId}\n   - القيد: ${p.registerNo}\n   - المستند: ${p.docType}`).join('');
+
+            return `*طلب حجز طيران وجواز جديد من منصة أجنحة دمشق* ✈️
+-----------------------------------
+🏷️ *رقم الحجز:* ${b.id}
+📍 *من:* دمشق (مطار دمشق الدولي)
+📍 *إلى:* سفارة ${b.destination}
+📅 *تاريخ الانطلاق:* ${b.travelDate}
+👥 *عدد المسافرين:* ${b.passengerCount}
+💵 *المبلغ الإجمالي:* $${b.totalPrice} USD
+-----------------------------------
+👤 *العميل الرئيسي:* ${b.clientContact.name}
+📞 *رقم الهاتف:* ${b.clientContact.phone}
+✉️ *البريد:* ${b.clientContact.email}
+-----------------------------------
+📋 *قائمة المسافرين والثبوتيات:* ${paxText}
+-----------------------------------
+يرجى تأكيد الحجز وموعد المراجعة الرسمية.`;
+        }
+
+        function sendTicketViaWhatsApp() {
+            const text = generateMessagePayloadText();
+            const targetNumber = '963982657214'; // International format
+            const url = `https://wa.me/${targetNumber}?text=${encodeURIComponent(text)}`;
+            window.open(url, '_blank');
+        }
+
+        function copyBookingDetailsText() {
+            const text = generateMessagePayloadText();
+            navigator.clipboard.writeText(text).then(() => {
+                alert("تم نسخ تفاصيل التذكرة والحجز بنجاح! يمكنك الآن لصقها وإرسالها عبر التليجرام أو الواتساب.");
+            });
+        }
+
+        function downloadTicketImage() {
+            const card = document.getElementById('boardingPassCard');
+            html2canvas(card).then(canvas => {
+                const image = canvas.toDataURL('image/jpeg');
+                const link = document.createElement('a');
+                link.href = image;
+                link.download = `Ticket_${currentActiveBooking ? currentActiveBooking.id : 'DAM'}.jpg`;
+                link.click();
+            });
+        }
+
+        function openAdminModal() {
+            document.getElementById('adminModal').classList.remove('hidden');
+        }
+
+        function closeAdminModal() {
+            document.getElementById('adminModal').classList.add('hidden');
+        }
+
+        function loginAdmin() {
+            const user = document.getElementById('adminUser').value.trim();
+            const pass = document.getElementById('adminPass').value.trim();
+
+            if(user === '0982657214' && pass === 'admin123') {
+                document.getElementById('adminLoginForm').classList.add('hidden');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                loadAdminBookings();
+            } else {
+                alert("اسم المستخدم أو كلمة المرور غير صحيحة!");
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('adminLoginForm').classList.remove('hidden');
+            document.getElementById('adminDashboard').classList.add('hidden');
+        }
+
+        function loadAdminBookings() {
+            const bookings = JSON.parse(localStorage.getItem('damascus_wings_bookings') || '[]');
+            const tbody = document.getElementById('adminBookingsTable');
+
+            if(bookings.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center p-6 text-slate-500">لا توجد حجوزات مسجلة حتى الآن</td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = bookings.map(b => `
+                <tr class="hover:bg-slate-800/50">
+                    <td class="p-3 font-mono font-bold text-amber-400">#${b.id}</td>
+                    <td class="p-3">
+                        <div class="font-bold text-white">${b.destination}</div>
+                        <div class="text-[10px] text-slate-400">${b.clientContact.name}</div>
+                    </td>
+                    <td class="p-3">${b.travelDate}</td>
+                    <td class="p-3 font-bold text-center">${b.passengerCount}</td>
+                    <td class="p-3 text-emerald-400 font-bold">$${b.totalPrice}</td>
+                    <td class="p-3">
+                        <div>${b.clientContact.phone}</div>
+                        <div class="text-[10px] text-slate-400">${b.clientContact.email}</div>
+                    </td>
+                    <td class="p-3 text-center">
+                        <button onclick='viewAdminDetail(${JSON.stringify(b)})' class="bg-amber-500/20 hover:bg-amber-500 hover:text-slate-950 text-amber-400 font-bold px-2.5 py-1 rounded-lg text-[10px] transition">
+                            عرض التفاصيل
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function viewAdminDetail(bookingObj) {
+            currentActiveBooking = bookingObj;
+            displayTicketModal(bookingObj);
+        }
+    </script>
+</body>
+</html>
